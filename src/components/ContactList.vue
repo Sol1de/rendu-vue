@@ -1,17 +1,23 @@
 <script>
+import { ref } from 'vue';
+import { useRecentContactsStore } from '@/stores/recentContacts';
+
 export default {
   props: {
-    contacts: {
-      type: Array,
-      required: true,
-    },
+    contacts: Array,
   },
-  methods: {
-    handleButtonClick(contact) {
-      // Fonction appelée lorsqu'un bouton est cliqué
-      alert('Vous appelez ' + contact.name);
-      // Ajoutez votre logique ici
-    },
+  setup(props) {
+    const recentContactsStore = useRecentContactsStore();
+
+    const handleButtonClick = (contact) => {
+      // Ajoutez le contact à la liste des contacts récents
+      recentContactsStore.addRecentContact(contact);
+      // Ajoutez votre logique ici (si nécessaire)
+    };
+
+    return {
+      handleButtonClick,
+    };
   },
 };
 </script>
@@ -22,7 +28,7 @@ export default {
     <ul>
       <li v-for="contact in contacts" :key="contact.name">
         {{ contact.name }} - {{ contact.phoneNumber }}
-        <button @click="handleButtonClick(contact)">Appel</button>
+        <button @click="handleButtonClick(contact)">🤙🏼</button>
       </li>
     </ul>
   </div>
@@ -39,7 +45,7 @@ export default {
   }
 
   button {
-    background-color: white;
+    background-color: transparent;
     border: 0;
     cursor: pointer;
   }

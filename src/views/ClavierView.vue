@@ -1,39 +1,40 @@
 <script>
+import { ref } from 'vue';
 import { useContactStore } from '@/stores/contact';
 import { useRecentContactsStore } from '@/stores/recentContacts';
 
 export default {
   name: 'ClavierViews',
-  data() {
-    return {
-      currentNumber: '',
-      isNumberUnknown: false,
-    };
-  },
-  methods: {
-    appendNumber(num) {
-      this.currentNumber += num;
-    },
-    submitNumber() {
-      const contactStore = useContactStore();
-      const recentContactsStore = useRecentContactsStore();
+  setup() {
+    const currentNumber = ref('');
+    const isNumberUnknown = ref(false);
+    const contactStore = useContactStore();
+    const recentContactsStore = useRecentContactsStore();
 
+    const appendNumber = (num) => {
+      currentNumber.value += num;
+    };
+
+    const submitNumber = () => {
       // Vérifiez si le numéro correspond à un contact existant
       const matchingContact = contactStore.contacts.find(
-        (contact) => contact.phoneNumber === this.currentNumber
+        (contact) => contact.phoneNumber === currentNumber.value
       );
 
       if (matchingContact) {
         // Ajoutez le contact à la liste des contacts récents
         recentContactsStore.addRecentContact(matchingContact);
         // Réinitialisez le numéro composé
-        this.currentNumber = '';
-        this.isNumberUnknown = false;
+        currentNumber.value = '';
+        isNumberUnknown.value = false;
       } else {
         // Affichez une alerte si le numéro est inconnu
         alert('Numéro inconnu');
+        isNumberUnknown.value = true;
       }
-    },
+    };
+
+    return { currentNumber, isNumberUnknown, appendNumber, submitNumber };
   },
 };
 </script>
@@ -58,8 +59,8 @@ export default {
       <div class="num num9"><p>#</p></div>
       <div class="num numSubmit" @click="submitNumber"><p>✔️</p></div>
     </div>
-    <div v-if="isNumberUnknown" class="alert">Numéro inconnu</div>
   </div>
+    <div v-if="isNumberUnknown" class="alert">Numéro inconnu</div>
 </template>
 
 <style>

@@ -1,4 +1,3 @@
-<!-- HomeView.vue -->
 <script>
 import { useRecentContactsStore } from '@/stores/recentContacts';
 import ContactList from '@/components/ContactList.vue';
