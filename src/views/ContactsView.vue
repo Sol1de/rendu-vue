@@ -1,22 +1,30 @@
 <script>
+import ContactList from '@/components/ContactList.vue';
+import { useContactStore } from '@/stores/contact';
+
 export default {
-  name: 'ContactsView'
-}
+  name: 'ContactsView',
+  components: {
+    ContactList,
+  },
+  setup() {
+    const contacts = useContactStore().contacts;
+    return { contacts };
+  },
+};
 </script>
 
 <template>
   <div class="contacts">
-    <h1>C'est une page de contact</h1>
+    <ContactList :contacts="contacts" />
   </div>
 </template>
 
 <style scoped>
-
-@media (min-width: 1024px) {
-  .contacts {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
+.contacts {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 </style>

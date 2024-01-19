@@ -1,23 +1,23 @@
-<!-- views/HomeView.vue -->
+<!-- HomeView.vue -->
 <script>
-  import { useContactStore } from '@/stores/contact';
-  import ContactList from '@/components/ContactList.vue';
+import { useRecentContactsStore } from '@/stores/recentContacts';
+import ContactList from '@/components/ContactList.vue';
 
-  export default {
-    name: 'HomeView',
-    components: {
-      ContactList,
-    },
-    setup() {
-      const contacts  = useContactStore().contacts;
-      return { contacts };
-    },
-  };
+export default {
+  name: 'HomeView',
+  components: {
+    ContactList,
+  },
+  setup() {
+    const recentContactsStore = useRecentContactsStore();
+    return { recentContacts: recentContactsStore.recentContacts };
+  },
+};
 </script>
 
 <template>
   <main>
     <TheWelcome />
-    <ContactList :contacts="contacts" />
+    <ContactList :contacts="recentContacts" />
   </main>
 </template>
